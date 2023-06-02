@@ -87,8 +87,7 @@ def safe_input(prompt, valid_inputs=None):
             if valid_inputs is not None:
                 if got in valid_inputs:
                     break
-                else:
-                    print("|   |_, Invalid action.\n|")
+                print("|   |_, Invalid action.\n|")
             else:
                 break
     return got
@@ -152,17 +151,16 @@ if __name__ == "__main__":
     if PASSWORD is None:
         PASSWORD = safe_input("|_, Type your password.\n|   ")
     if SALT is None:
-        SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
-        if SALT in ["", "random"]:
-            SALT = get_random_bytes(_DEF_SALT_SIZE)
-        else:
-            while True:
-                try:
-                    SALT = bytes.fromhex(SALT)
-                    break
-                except ValueError:
-                    print("|   |_, Please use [0-9a-f] only.\n|")
-                SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
+        while True:
+            SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
+            if SALT in ["", "random"]:
+                SALT = get_random_bytes(_DEF_SALT_SIZE)
+                break
+            try:
+                SALT = bytes.fromhex(SALT)
+                break
+            except ValueError:
+                print("|   |_, Please use [0-9a-f] only.\n|")
 
     if ACTION == "encode":
         print(
