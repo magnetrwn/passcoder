@@ -1,0 +1,54 @@
+passcoder.py
+
+Basic Text Encrypt/Decrypt Script Tool
+(AES-CTR + PBKDF2 + zlib)
+
+This is not a general-purpose tool, but only a straightforward script.
+This module provides a basic tool for encrypting and decrypting text,
+specifically designed to enhance the security of storing passwords on
+paper media. It employs a multi-step encryption process.
+
+Usage:
+   python3 passcoder.py [encode/decode] [text] [password] [salt]
+   Parameters can be skipped to enter Wizard Mode, see Usage Details.
+
+Encryption Process (invert for decryption):
+1. Encryption Key Generation:
+   The plaintext password and salt fields are used as inputs to generate
+   an encryption key. The key is derived from the hash returned by PBKDF2.
+
+2. AES Cipher Initialization:
+   The generated encryption key is utilized to initialize an AES cipher
+   in Counter mode. Additionally, a randomly generated nonce is created.
+
+3. zlib Text Compression
+   Before encoding, the plaintext is compressed using zlib to reduce
+   final string length.
+
+4. Ciphertext Encoding:
+   The plaintext is encrypted using the AES cipher in Counter mode.
+   The resulting ciphertext is concatenated with the nonce to form
+   the final encoded string.
+
+To securely store passwords using this tool, it is essential to
+safely store two values other than the ciphertext:
+1. Password: A string representing the password itself.
+2. Salt: A fromhex string used as a parameter for key derivation.
+
+Usage Details:
+1. Wizard Mode:
+   The module provides an interactive wizard that prompts for each
+   required value. It offers structured input options and, if desired,
+   default values can be utilized.
+
+2. Argument Mode:
+   Values can be passed as arguments when executing the module.
+   This allows for automation of the encryption and decryption process.
+   If not ready, a subset of arguments can be added, and the rest will
+   be prompted in Wizard Mode.
+
+Sample Application:
+   An interesting use of this script is also my reason for its creation:
+   the writing of a password backup leaflet encrypted in a recoverable
+   way. The decryption password can be kept the same across the booklet,
+   while the salt can be hidden some other way.
