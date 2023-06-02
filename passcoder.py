@@ -152,16 +152,17 @@ if __name__ == "__main__":
     if PASSWORD is None:
         PASSWORD = safe_input("|_, Type your password.\n|   ")
     if SALT is None:
-        while True:
-            SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
-            if SALT in ["", "random"]:
-                SALT = get_random_bytes(_DEF_SALT_SIZE)
-            else:
+        SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
+        if SALT in ["", "random"]:
+            SALT = get_random_bytes(_DEF_SALT_SIZE)
+        else:
+            while True:
                 try:
                     SALT = bytes.fromhex(SALT)
                     break
                 except ValueError:
                     print("|   |_, Please use [0-9a-f] only.\n|")
+                SALT = safe_input("|_, Type your salt (fromhex), or [random].\n|   ")
 
     if ACTION == "encode":
         print(
