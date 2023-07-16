@@ -1,4 +1,23 @@
-cmake_minimum_required(VERSION 3.0)
-project(passcoder)
+cmake_minimum_required(VERSION 3.12.0)
+set(PROJECT_NAME passcoder)
+project(${PROJECT_NAME})
 
-add_executable(MyExecutable main.cpp)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
+
+file(GLOB CODE
+    "include/*.hpp"
+    "include/*.ipp"
+    "src/*.cpp"
+)
+include_directories(
+    include
+    src
+    ${GTKMM_INCLUDE_DIRS}
+)
+link_libraries(
+    ${GTKMM_LIBRARIES}
+)
+add_compile_definitions(DEBUG)
+add_compile_definitions(UI_FILENAME="ui/mainw.glade")
+add_executable(${PROJECT_NAME} ${CODE})

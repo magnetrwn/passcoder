@@ -1,5 +1,3 @@
-#define DEBUG
-
 #include "window.hpp"
 
 
