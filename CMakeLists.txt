@@ -18,6 +18,8 @@ include_directories(
 link_libraries(
     ${GTKMM_LIBRARIES}
 )
+add_compile_options(-Wall -Wextra -Wpedantic)
 add_compile_definitions(DEBUG)
 add_compile_definitions(UI_FILENAME="ui/mainw.glade")
 add_executable(${PROJECT_NAME} ${CODE})
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambda_init_captures)
