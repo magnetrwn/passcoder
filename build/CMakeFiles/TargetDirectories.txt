@@ -1,3 +1,0 @@
-/home/eye/Developer/gtk-passcoder/build/CMakeFiles/passcoder.dir
-/home/eye/Developer/gtk-passcoder/build/CMakeFiles/edit_cache.dir
-/home/eye/Developer/gtk-passcoder/build/CMakeFiles/rebuild_cache.dir
