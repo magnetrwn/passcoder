@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.12.0)
-set(PROJECT_NAME passcoder)
-project(${PROJECT_NAME})
+project(passcoder)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
@@ -18,7 +17,9 @@ include_directories(
 link_libraries(
     ${GTKMM_LIBRARIES}
 )
-add_compile_options(-Wall -Wextra -Wpedantic)
+if(MSVC)
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 add_compile_definitions(DEBUG)
 add_compile_definitions(UI_FILENAME="ui/mainw.glade")
 add_executable(${PROJECT_NAME} ${CODE})
