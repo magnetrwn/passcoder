@@ -1,6 +1,8 @@
 #!/usr/bin/sh
 
 cd build
+rm passcoder
 cmake ..
 make
-echo 'Done: Run "./passcoder" from inside the build folder.'
+rm -r CMakeFiles cmake_install.cmake CMakeCache.txt Makefile
+printf '\n\u001B[36mDone: Run "./passcoder" from inside the build folder.\u001B[0m\n'
