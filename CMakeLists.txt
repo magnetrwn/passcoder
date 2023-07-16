@@ -9,6 +9,7 @@ file(GLOB PROJECT_FILES
     "include/*.ipp"
     "src/*.cpp"
 )
+# Glade UI default folder (in build):
 set(UI_FILENAME \"ui/mainw.glade\")
 include_directories(
     include
