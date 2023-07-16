@@ -6,5 +6,9 @@ cd build
 cmake ..
 make
 rm -r CMakeFiles cmake_install.cmake CMakeCache.txt Makefile 2> /dev/null
-printf '\n\u001B[36mDone: Run "./passcoder" from inside the build folder.\u001B[0m\n'
+zip -r "passcoder_build$(date +%s).zip" .
+mv passcoder_build* ../
+
+
+# Run this from project root, it will generate a build zip for you!
 # TODO: does not install to system yet.

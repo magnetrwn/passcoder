@@ -4,11 +4,12 @@ project(passcoder)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 
-file(GLOB CODE
+file(GLOB PROJECT_FILES
     "include/*.hpp"
     "include/*.ipp"
     "src/*.cpp"
 )
+set(UI_FILENAME \"ui/mainw.glade\")
 include_directories(
     include
     src
@@ -17,10 +18,13 @@ include_directories(
 link_libraries(
     ${GTKMM_LIBRARIES}
 )
+
 if(MSVC)
+    add_compile_options(/w4)
+else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 add_compile_definitions(DEBUG)
-add_compile_definitions(UI_FILENAME="ui/mainw.glade")
-add_executable(${PROJECT_NAME} ${CODE})
+add_compile_definitions(UI_FILENAME=${UI_FILENAME})
+add_executable(${PROJECT_NAME} ${PROJECT_FILES})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambda_init_captures)
