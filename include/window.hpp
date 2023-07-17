@@ -22,6 +22,6 @@ private:
     std::vector<Gtk::MenuItem*> window_menu;
 };
 
-#include "window.ipp"
+#include "window.tpp"
 
 #endif

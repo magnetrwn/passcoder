@@ -17,7 +17,7 @@ include_directories(
 )
 file(GLOB PROJECT_FILES
     "include/*.hpp"
-    "include/*.ipp"
+    "include/*.tpp"
     "src/*.cpp"
 )
 set(UI_FILENAME "ui/mainw.glade")
