@@ -1,5 +1,5 @@
 #include "window.hpp"
-
+#include <iostream>
 
 WindowUI::WindowUI() {
     // Setup GTKmm builder with Glade UI file
@@ -24,7 +24,7 @@ WindowUI::WindowUI() {
     // Initialize pointers for widgets
     builder->get_widget("main_window", main_window);
     if (!main_window) {
-        std::cerr << "UI: Unable to find main_window in \"" << UI_FILENAME << "\"." << std::endl;
+        std::cerr << "Unable to find Glade UI main_window in \"" << UI_FILENAME << "\"." << std::endl;
         throw 130;
     }
     builder->get_widget("method_button", method_button);
