@@ -4,10 +4,10 @@
 
 int main(int argc, char* argv[]) {
 
-    MemorableStringGen wordgen("res/adjectives.csv", "res/nouns.csv");
+    MemorableStringGen memorable("res/adjectives.csv", "res/nouns.csv");
 
     Gtk::Main kit(argc, argv);
-    WindowUI window;
+    WindowUI window(memorable);
     window.run();
 
     return 0;

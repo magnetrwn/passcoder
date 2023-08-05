@@ -1,6 +1,7 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
+#include "memorable.hpp"
 #include <vector>
 #include <gtkmm.h>
 
@@ -12,12 +13,19 @@ private:
     // Widgets
     Gtk::Window* main_window;
     Gtk::Button* method_button;
+
     enum MenuItemIndex { QUIT, menuitems };
     std::vector<Gtk::MenuItem*> window_menu;
 
+    enum FieldRowIndex { INPUT1, INPUT2, OUTPUT1, OUTPUT2, fieldrows };
+    enum FieldsIndex { LABEL, FIELD, BUTTON, fieldnum };
+    std::vector<std::tuple<Gtk::Label*, Gtk::Entry*, Gtk::Button*>> fields;
+
+    MemorableStringGen memorable;
+
 public:
     // Constructor
-    WindowUI();
+    WindowUI(MemorableStringGen memorable);
     void run();
     void quit();
 };
