@@ -1,9 +1,11 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include "memorable.hpp"
+#include <iostream>
 #include <vector>
 #include <gtkmm.h>
+
+#include "memorable.hpp"
 
 class WindowUI : public Gtk::Window {
 private:

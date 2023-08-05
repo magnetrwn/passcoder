@@ -1,6 +1,5 @@
 #include "window.hpp"
-#include <iostream>
-// TODO: fix mismatching use of pascalCase with snake_case namings!
+
 WindowUI::WindowUI(MemorableStringGen memorable)
     : memorable(memorable) {
 

@@ -4,6 +4,11 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <iostream>
+#include <ctime>
+#include <cctype>
+
+#include "read.hpp"
 
 class MemorableStringGen {
 private:

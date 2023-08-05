@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 
-// Static method classes, call these utilities when needed
 class CSVReader {
 public:
     static void readCSV(const std::string &filename, std::vector<std::string> &dest);

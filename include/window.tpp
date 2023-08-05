@@ -1,7 +1,6 @@
 // Safely connect functions to signals, and also print the object name on signal
 // use it like this inside of WindowUI, capturing in lambda by reference:
 //     safe_connect_signal(widget, widget->signal_something(), [this](){...});
-#include <iostream>
 
 template <typename WidgetClass, typename SignalType, typename Function>
 void safe_connect_signal(WidgetClass* widget, SignalType signal, const Function& call_function) {
