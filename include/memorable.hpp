@@ -8,7 +8,7 @@
 #include <ctime>
 #include <cctype>
 
-#include "read.hpp"
+#include "file.hpp"
 
 class MemorableStringGen {
 private:

@@ -1,10 +1,7 @@
 #include "memorable.hpp"
 
 MemorableStringGen::MemorableStringGen(const std::string &adjectivesFile, const std::string &nounsFile)
-    : mt(static_cast<unsigned int>(std::time(nullptr))) {
-
-    CSVReader::readCSV(adjectivesFile, adjectives);
-    CSVReader::readCSV(nounsFile, nouns);
+    : mt(static_cast<unsigned int>(std::time(nullptr))), adjectives(CSVUtil::readCSV(adjectivesFile)), nouns(CSVUtil::readCSV(nounsFile)) {
 
     adjVecDist = std::uniform_int_distribution<unsigned int>(0, adjectives.size() - 1);
     nounsVecDist = std::uniform_int_distribution<unsigned int>(0, nouns.size() - 1);
