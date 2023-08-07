@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+// TODO: naming consistency!
+
 WindowUI::WindowUI(MemorableStringGen memorable)
     : memorable(memorable) {
 
@@ -15,8 +17,10 @@ WindowUI::WindowUI(MemorableStringGen memorable)
         throw 129;
     }
 
+    // TODO: is this really necessary though...
     // Assign nullptr to WindowUI widget pointers
     main_window = nullptr;
+    settings_window = nullptr;
     method_button = nullptr;
     window_menu.resize(menuitems);
     for(auto& menu_item : window_menu)
@@ -34,42 +38,44 @@ WindowUI::WindowUI(MemorableStringGen memorable)
         std::cerr << "Unable to find Glade UI main_window in \"" << UI_FILENAME << "\"." << std::endl;
         throw 130;
     }
+    builder->get_widget("settings_window", settings_window);
+    if (!main_window) {
+        std::cerr << "Unable to find Glade UI settings_window in \"" << UI_FILENAME << "\"." << std::endl;
+        throw 130;
+    }
     builder->get_widget("method_button", method_button);
-
     builder->get_widget("menu_file_quit", window_menu[QUIT]);
+    for (int row = INPUT1; row < fieldrows; row++) {
+        std::string nameBeginning, nameNumber;
+        if (row < OUTPUT1) {
+            nameBeginning = "input";
+            nameNumber = std::to_string(row + 1);
+        } else {
+            nameBeginning = "output";
+            nameNumber = std::to_string(row - 3);
+        }
+        std::string labelName = nameBeginning + nameNumber + "_label";
+        std::string fieldName = nameBeginning + nameNumber + "_field";
+        std::string buttonName = nameBeginning + nameNumber + "_button";
 
-    builder->get_widget("input1_label", std::get<LABEL>(fields[INPUT1]));
-    builder->get_widget("input2_label", std::get<LABEL>(fields[INPUT2]));
-    builder->get_widget("output1_label", std::get<LABEL>(fields[OUTPUT1]));
-    builder->get_widget("output2_label", std::get<LABEL>(fields[OUTPUT2]));
-    builder->get_widget("input1_field", std::get<FIELD>(fields[INPUT1]));
-    builder->get_widget("input2_field", std::get<FIELD>(fields[INPUT2]));
-    builder->get_widget("output1_field", std::get<FIELD>(fields[OUTPUT1]));
-    builder->get_widget("output2_field", std::get<FIELD>(fields[OUTPUT2]));
-    builder->get_widget("input1_button", std::get<BUTTON>(fields[INPUT1]));
-    builder->get_widget("input2_button", std::get<BUTTON>(fields[INPUT2]));
-    builder->get_widget("output1_button", std::get<BUTTON>(fields[OUTPUT1]));
-    builder->get_widget("output2_button", std::get<BUTTON>(fields[OUTPUT2]));
+        builder->get_widget(labelName, std::get<LABEL>(fields[row]));
+        builder->get_widget(fieldName, std::get<FIELD>(fields[row]));
+        builder->get_widget(buttonName, std::get<BUTTON>(fields[row]));
+    }
 
     // Connect signals from widgets to functions using template
-    safe_connect_signal(method_button, method_button->signal_clicked(), [](){});
-
-    safe_connect_signal(window_menu[QUIT], window_menu[QUIT]->signal_activate(), [this](){
+    safe_connect_signal(method_button, method_button->signal_clicked(), [this]{
+        this->settings_window->show();
+    });
+    safe_connect_signal(window_menu[QUIT], window_menu[QUIT]->signal_activate(), [this]{
         this->quit();
     });
-
-    safe_connect_signal(std::get<BUTTON>(fields[INPUT1]), std::get<BUTTON>(fields[INPUT1])->signal_clicked(), [this](){
-        std::get<WindowUI::FieldsIndex::FIELD>(fields[WindowUI::FieldRowIndex::INPUT1])->set_text(this->memorable.getLeet());
-    });
-    safe_connect_signal(std::get<BUTTON>(fields[INPUT2]), std::get<BUTTON>(fields[INPUT2])->signal_clicked(), [this](){
-        std::get<WindowUI::FieldsIndex::FIELD>(fields[WindowUI::FieldRowIndex::INPUT2])->set_text(this->memorable.getLeet());
-    });
-    safe_connect_signal(std::get<BUTTON>(fields[OUTPUT1]), std::get<BUTTON>(fields[OUTPUT1])->signal_clicked(), [this](){
-        std::get<WindowUI::FieldsIndex::FIELD>(fields[WindowUI::FieldRowIndex::OUTPUT1])->set_text(this->memorable.getLeet());
-    });
-    safe_connect_signal(std::get<BUTTON>(fields[OUTPUT2]), std::get<BUTTON>(fields[OUTPUT2])->signal_clicked(), [this](){
-        std::get<WindowUI::FieldsIndex::FIELD>(fields[WindowUI::FieldRowIndex::OUTPUT2])->set_text(this->memorable.getLeet());
-    });
+    for (int row = INPUT1; row < fieldrows; row++) {
+        safe_connect_signal(std::get<BUTTON>(fields[row]),
+            std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
+                std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.getLeet());
+            });
+    }
 }
 
 void WindowUI::run() {
