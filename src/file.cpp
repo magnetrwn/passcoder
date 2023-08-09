@@ -28,11 +28,11 @@ JSONUtil::readJSON(const std::string &filename) {
 
     std::string jsonContent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
-    // Parse JSON content using Boost.JSON
     boost::json::error_code ec;
     boost::json::value parsedValue = boost::json::parse(jsonContent, ec);
     if (ec) {
-        throw std::runtime_error("Failed to parse JSON content: " + ec.message());
+        std::cerr << "Failed to parse JSON content: " << ec.message() << std::endl;
+        throw 134;
     }
 
     return parsedValue;

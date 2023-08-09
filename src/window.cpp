@@ -81,7 +81,7 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     for (int row = INPUT1; row < fieldrows; row++) {
         safe_connect_signal(std::get<BUTTON>(fields[row]),
         std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
-            std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.getLeet());
+            std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.get());
         });
     }
 }

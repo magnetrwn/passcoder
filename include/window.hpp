@@ -27,6 +27,7 @@ private:
     { LABEL, FIELD, BUTTON, fieldnum };
     std::vector<std::tuple<Gtk::Label*, Gtk::Entry*, Gtk::Button*>> fields;
 
+
     MemorableStringGen memorable;
 
 public:
