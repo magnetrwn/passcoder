@@ -21,3 +21,12 @@ astyle --mode=c \
        --squeeze-ws \
        --recursive \
        ./*.cpp,*.hpp,*.tpp
+
+if ! command -v cppcheck &>/dev/null
+then
+    echo "Missing \"cppcheck\", skipping lint step."
+    exit
+fi
+
+cppcheck --enable=style --inconclusive --std=c++14 include
+cppcheck --enable=style --inconclusive --std=c++14 src
