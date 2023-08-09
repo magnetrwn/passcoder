@@ -2,9 +2,10 @@
 #include "memorable.hpp"
 #include <iostream>
 
-int main(int argc, char* argv[]) {
+int
+main(int argc, char* argv[]) {
 
-    MemorableStringGen memorable("res/adjectives.csv", "res/nouns.csv");
+    MemorableStringGen memorable("res/adjectives.csv", "res/nouns.csv", "res/numbers.csv", "res/phonetic.csv");
 
     Gtk::Main kit(argc, argv);
     WindowUI window(memorable);

@@ -22,11 +22,12 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     main_window = nullptr;
     settings_window = nullptr;
     method_button = nullptr;
-    window_menu.resize(menuitems);
-    for(auto& menu_item : window_menu)
-        menu_item = nullptr;
+
+    menu_file_quit = nullptr;
+    menu_edit_settings = nullptr;
+
     fields.resize(fieldrows);
-    for(auto& field_row : fields) {
+    for (auto& field_row : fields) {
         std::get<LABEL>(field_row) = nullptr;
         std::get<FIELD>(field_row) = nullptr;
         std::get<BUTTON>(field_row) = nullptr;
@@ -43,8 +44,12 @@ WindowUI::WindowUI(MemorableStringGen memorable)
         std::cerr << "Unable to find Glade UI settings_window in \"" << UI_FILENAME << "\"." << std::endl;
         throw 130;
     }
+
     builder->get_widget("method_button", method_button);
-    builder->get_widget("menu_file_quit", window_menu[QUIT]);
+
+    builder->get_widget("menu_file_quit", menu_file_quit);
+    builder->get_widget("menu_edit_settings", menu_edit_settings);
+
     for (int row = INPUT1; row < fieldrows; row++) {
         std::string nameBeginning, nameNumber;
         if (row < OUTPUT1) {
@@ -64,24 +69,29 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     }
 
     // Connect signals from widgets to functions using template
-    safe_connect_signal(method_button, method_button->signal_clicked(), [this]{
+    safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
         this->settings_window->show();
     });
-    safe_connect_signal(window_menu[QUIT], window_menu[QUIT]->signal_activate(), [this]{
+    safe_connect_signal(menu_edit_settings, menu_edit_settings->signal_activate(), [this] {
+        this->settings_window->show();
+    });
+    safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
         this->quit();
     });
     for (int row = INPUT1; row < fieldrows; row++) {
         safe_connect_signal(std::get<BUTTON>(fields[row]),
-            std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
-                std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.getLeet());
-            });
+        std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
+            std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.getLeet());
+        });
     }
 }
 
-void WindowUI::run() {
+void
+WindowUI::run() {
     Gtk::Main::run(*main_window);
 }
 
-void WindowUI::quit() {
+void
+WindowUI::quit() {
     Gtk::Main::quit();
 }

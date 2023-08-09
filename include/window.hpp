@@ -16,13 +16,15 @@ private:
     Gtk::Window* main_window;
     Gtk::Window* settings_window;
 
+    Gtk::MenuItem* menu_file_quit;
+    Gtk::MenuItem* menu_edit_settings;
+
     Gtk::Button* method_button;
 
-    enum MenuItemIndex { QUIT, menuitems };
-    std::vector<Gtk::MenuItem*> window_menu;
-
-    enum FieldRowIndex { INPUT1, INPUT2, INPUT3, INPUT4, OUTPUT1, OUTPUT2, OUTPUT3, OUTPUT4, fieldrows };
-    enum FieldsIndex { LABEL, FIELD, BUTTON, fieldnum };
+    enum FieldRowIndex
+    { INPUT1, INPUT2, INPUT3, INPUT4, OUTPUT1, OUTPUT2, OUTPUT3, OUTPUT4, fieldrows };
+    enum FieldsIndex
+    { LABEL, FIELD, BUTTON, fieldnum };
     std::vector<std::tuple<Gtk::Label*, Gtk::Entry*, Gtk::Button*>> fields;
 
     MemorableStringGen memorable;

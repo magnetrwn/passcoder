@@ -1,6 +1,7 @@
 #include "file.hpp"
 
-std::vector<std::string> CSVUtil::readCSV(const std::string &filename) {
+std::vector<std::string>
+CSVUtil::readCSV(const std::string &filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file." << std::endl;
@@ -17,7 +18,8 @@ std::vector<std::string> CSVUtil::readCSV(const std::string &filename) {
     return destVector;
 }
 
-boost::json::value JSONUtil::readJSON(const std::string &filename) {
+boost::json::value
+JSONUtil::readJSON(const std::string &filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Failed to open file." << std::endl;
