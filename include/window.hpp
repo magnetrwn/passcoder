@@ -9,12 +9,13 @@
 
 class WindowUI : public Gtk::Window {
 private:
+    MemorableStringGen memorable;
+
     // Glade UI builder
     Glib::RefPtr<Gtk::Builder> builder;
 
-    // Widgets
+    // Main window
     Gtk::Window* main_window;
-    Gtk::Window* settings_window;
 
     Gtk::MenuItem* menu_file_quit;
     Gtk::MenuItem* menu_edit_settings;
@@ -27,8 +28,19 @@ private:
     { LABEL, FIELD, BUTTON, fieldnum };
     std::vector<std::tuple<Gtk::Label*, Gtk::Entry*, Gtk::Button*>> fields;
 
+    // Settings window
+    Gtk::Window* settings_window;
 
-    MemorableStringGen memorable;
+    Gtk::ComboBoxText* settings_generator;
+
+    Gtk::ToggleButton* settings_leetify;
+
+    Gtk::Scale* scale_leet_rate;
+    Gtk::Scale* scale_length;
+    Gtk::Scale* scale_numbers;
+
+    Gtk::Button* settings_apply_button;
+    Gtk::Button* settings_defaults_button;
 
 public:
     // Constructor

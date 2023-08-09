@@ -8,7 +8,7 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     // Setup GTKmm builder with Glade UI file
     builder = Gtk::Builder::create();
     try {
-        builder->add_from_file(UI_FILENAME);
+        builder->add_from_file("ui/mainw.glade");
     } catch (const Glib::FileError& ex) {
         std::cerr << "FileError: " << ex.what() << std::endl;
         throw 128;
@@ -33,23 +33,15 @@ WindowUI::WindowUI(MemorableStringGen memorable)
         std::get<BUTTON>(field_row) = nullptr;
     }
 
-    // Initialize pointers for widgets
+    // Initialize pointers and signals for main window widgets
     builder->get_widget("main_window", main_window);
     if (!main_window) {
-        std::cerr << "Unable to find Glade UI main_window in \"" << UI_FILENAME << "\"." << std::endl;
+        std::cerr << "Unable to find Glade UI main_window." << std::endl;
         throw 130;
     }
-    builder->get_widget("settings_window", settings_window);
-    if (!main_window) {
-        std::cerr << "Unable to find Glade UI settings_window in \"" << UI_FILENAME << "\"." << std::endl;
-        throw 130;
-    }
-
     builder->get_widget("method_button", method_button);
-
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
-
     for (int row = INPUT1; row < fieldrows; row++) {
         std::string nameBeginning, nameNumber;
         if (row < OUTPUT1) {
@@ -68,22 +60,49 @@ WindowUI::WindowUI(MemorableStringGen memorable)
         builder->get_widget(buttonName, std::get<BUTTON>(fields[row]));
     }
 
-    // Connect signals from widgets to functions using template
-    safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
-        this->settings_window->show();
-    });
     safe_connect_signal(menu_edit_settings, menu_edit_settings->signal_activate(), [this] {
         this->settings_window->show();
     });
     safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
         this->quit();
     });
-    for (int row = INPUT1; row < fieldrows; row++) {
+    for (int row = INPUT1; row < OUTPUT1; row++) {
         safe_connect_signal(std::get<BUTTON>(fields[row]),
         std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
             std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.get());
         });
     }
+
+    // Initialize pointers and signals for settings window widgets
+    builder->get_widget("settings_window", settings_window);
+    if (!main_window) {
+        std::cerr << "Unable to find Glade UI settings_window." << std::endl;
+        throw 130;
+    }
+    builder->get_widget("settings_generator", settings_generator);
+    builder->get_widget("settings_leetify", settings_leetify);
+    builder->get_widget("scale_leet_rate", scale_leet_rate);
+    builder->get_widget("scale_length", scale_length);
+    builder->get_widget("scale_numbers", scale_numbers);
+    builder->get_widget("settings_apply_button", settings_apply_button);
+    builder->get_widget("settings_defaults_button", settings_defaults_button);
+
+    safe_connect_signal(settings_apply_button, settings_apply_button->signal_clicked(), [this] {
+        this->memorable.setGenerator(MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id()));
+        this->memorable.setLeet(this->settings_leetify->get_active());
+        this->memorable.setRandomness(this->scale_leet_rate->get_value());
+        this->memorable.setWordCount(this->scale_numbers->get_value());
+        this->memorable.setTotalLength(this->scale_length->get_value());
+        this->settings_window->hide();
+    });
+    safe_connect_signal(settings_defaults_button, settings_defaults_button->signal_clicked(), [this] {
+        // TODO: default settings are not centralized, will need to refactor
+        this->settings_generator->set_active(0);
+        this->settings_leetify->set_active();
+        this->scale_leet_rate->set_value(0.167);
+        this->scale_length->set_value(32);
+        this->scale_numbers->set_value(10);
+    });
 }
 
 void

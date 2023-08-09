@@ -15,7 +15,6 @@ file(GLOB PROJECT_FILES
 
 # Defines
 add_compile_definitions(DEBUG)
-add_compile_definitions(UI_FILENAME=\"ui/mainw.glade\")
 
 # Setup compiler
 if(MSVC)
