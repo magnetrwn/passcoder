@@ -16,10 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install GTKmm 3.0
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libgtkmm-3.0-dev
+        sudo apt-get install -y libgtkmm-3.0-dev libboost-json1.81-dev
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
