@@ -13,6 +13,8 @@ safe_connect_signal(WidgetClass* widget, SignalType signal, const Function& call
 #endif
             call_function();
         });
+#ifdef DEBUG
         std::cout << "Debug: Connected signal to widget \"" << content << "\"." << std::endl;
+#endif
     }
 }

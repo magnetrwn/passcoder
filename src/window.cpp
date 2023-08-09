@@ -84,8 +84,38 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     builder->get_widget("scale_leet_rate", scale_leet_rate);
     builder->get_widget("scale_length", scale_length);
     builder->get_widget("scale_numbers", scale_numbers);
+    builder->get_widget("label_length", label_length);
+    builder->get_widget("label_numbers", label_numbers);
     builder->get_widget("settings_apply_button", settings_apply_button);
     builder->get_widget("settings_defaults_button", settings_defaults_button);
+
+    scale_length->hide();
+    label_length->hide();
+    scale_numbers->hide();
+    label_numbers->hide();
+
+    safe_connect_signal(settings_generator, settings_generator->signal_changed(), [this] {
+        MemorableStringGen::genSetting setting = MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id());
+#ifdef DEBUG
+        std::cerr << "Debug: setting: " << setting << std::endl;
+#endif
+        if (setting == MemorableStringGen::ADJ_AND_NOUN or setting == MemorableStringGen::PHONETIC_NOUN) {
+            this->scale_length->hide();
+            this->label_length->hide();
+            this->scale_numbers->hide();
+            this->label_numbers->hide();
+        } else if (setting == MemorableStringGen::PHONETIC or setting == MemorableStringGen::NUMBERS) {
+            this->scale_length->hide();
+            this->label_length->hide();
+            this->scale_numbers->show();
+            this->label_numbers->show();
+        } else if (setting == MemorableStringGen::HEXADECIMAL or setting == MemorableStringGen::ASCII85) {
+            this->scale_length->show();
+            this->label_length->show();
+            this->scale_numbers->hide();
+            this->label_numbers->hide();
+        }
+    });
 
     safe_connect_signal(settings_apply_button, settings_apply_button->signal_clicked(), [this] {
         this->memorable.setGenerator(MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id()));

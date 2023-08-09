@@ -39,6 +39,9 @@ private:
     Gtk::Scale* scale_length;
     Gtk::Scale* scale_numbers;
 
+    Gtk::Label* label_length;
+    Gtk::Label* label_numbers;
+
     Gtk::Button* settings_apply_button;
     Gtk::Button* settings_defaults_button;
 
