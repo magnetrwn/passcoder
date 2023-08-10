@@ -2,13 +2,13 @@
 
 // TODO: naming consistency!
 
-WindowUI::WindowUI(MemorableStringGen memorable)
+WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     : memorable(memorable) {
 
     // Setup GTKmm builder with Glade UI file
     builder = Gtk::Builder::create();
     try {
-        builder->add_from_file("ui/mainw.glade");
+        builder->add_from_file(uiFile);
     } catch (const Glib::FileError& ex) {
         std::cerr << "FileError: " << ex.what() << std::endl;
         throw 128;

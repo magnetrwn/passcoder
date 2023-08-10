@@ -48,7 +48,7 @@ private:
 
 public:
     // Constructor
-    WindowUI(MemorableStringGen memorable);
+    WindowUI(const std::string &uiFile, MemorableStringGen memorable);
     void run();
     void quit();
 };
