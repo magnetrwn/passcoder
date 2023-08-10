@@ -7,15 +7,16 @@
 #include <iostream>
 #include <ctime>
 #include <cctype>
+#include <stdexcept>
 
+#include <boost/json.hpp>
 #include <glibmm/ustring.h>
 
 #include "file.hpp"
 
 class MemorableStringGen {
 public:
-    MemorableStringGen(const std::string &adjectivesFile, const std::string &nounsFile,
-                       const std::string &numbersFile, const std::string &phoneticFile);
+    MemorableStringGen(const std::string &stringsFile);
     enum genSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII, gensettings };
 
     std::string get();

@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <stdexcept>
+
 #include <gtkmm.h>
 
 #include "memorable.hpp"

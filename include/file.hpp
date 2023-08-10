@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <stdexcept>
 
 #include <boost/json.hpp>
 
@@ -16,6 +17,8 @@ public:
 class JSONUtil {
 public:
     static boost::json::value readJSON(const std::string &filename);
+    static std::vector<std::string> getListValues(const boost::json::value &parsedValue,
+            const std::string &listName);
 };
 
 #endif

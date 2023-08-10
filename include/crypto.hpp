@@ -5,6 +5,7 @@
 #include <string>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+#include <stdexcept>
 
 class AESTools {
 public:

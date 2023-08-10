@@ -14,10 +14,8 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
         EVP_EncryptInit_ex(ctx, EVP_aes_128_ctr(), nullptr, keyBytes, ivBytes);
     else if (bits == AESTools::bitNumber::AES256)
         EVP_EncryptInit_ex(ctx, EVP_aes_256_ctr(), nullptr, keyBytes, ivBytes);
-    else {
-        std::cerr << "Invalid bits number requested for AESTools::encCTR()." << std::endl;
-        throw 132;
-    }
+    else
+        throw std::runtime_error("Invalid bits number requested for AESTools::encCTR().");
 
     int len;
     unsigned char *ciphertextStart = reinterpret_cast<unsigned char*>(&ciphertext[0]);

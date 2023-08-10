@@ -5,7 +5,7 @@
 int
 main(int argc, char* argv[]) {
 
-    MemorableStringGen memorable("res/adjectives.csv", "res/nouns.csv", "res/numbers.csv", "res/phonetic.csv");
+    MemorableStringGen memorable("res/strings.json");
 
     Gtk::Main kit(argc, argv);
     WindowUI window("ui/classic.glade", memorable);

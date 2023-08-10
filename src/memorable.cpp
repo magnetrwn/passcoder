@@ -1,12 +1,14 @@
 #include "memorable.hpp"
 
-MemorableStringGen::MemorableStringGen(const std::string &adjectivesFile, const std::string &nounsFile,
-                                       const std::string &numbersFile, const std::string &phoneticFile)
-    : mt(static_cast<uint>(std::time(nullptr))),
-      adjectives(CSVUtil::readCSV(adjectivesFile)),
-      nouns(CSVUtil::readCSV(nounsFile)),
-      numbers(CSVUtil::readCSV(numbersFile)),
-      phonetic(CSVUtil::readCSV(phoneticFile)) {
+MemorableStringGen::MemorableStringGen(const std::string &stringsFile)
+    : mt(static_cast<uint>(std::time(nullptr))) {
+
+    const boost::json::object rootJSON = JSONUtil::readJSON(stringsFile).as_object();
+
+    adjectives = JSONUtil::getListValues(rootJSON, "adjectives");
+    nouns = JSONUtil::getListValues(rootJSON, "nouns");
+    numbers = JSONUtil::getListValues(rootJSON, "numbers");
+    phonetic = JSONUtil::getListValues(rootJSON, "phonetic");
 
     adjVecDist = std::uniform_int_distribution<uint>(0, adjectives.size() - 1);
     nounsVecDist = std::uniform_int_distribution<uint>(0, nouns.size() - 1);
@@ -69,9 +71,7 @@ MemorableStringGen::get() {
             phrase += static_cast<char>(randUcharDist(mt) % 93 + 33);
         break;
     default:
-        std::cerr << "Invalid generator for MemorableStringGen." << std::endl;
-        throw 135;
-        break;
+        throw std::runtime_error("Invalid generator for MemorableStringGen.");
     }
     if (leetEnabled)
         return phrase = toLeet(phrase);
@@ -95,10 +95,8 @@ MemorableStringGen::ustringToGenSetting(const Glib::ustring &src) {
         gen = MemorableStringGen::HEXADECIMAL;
     else if (src == Glib::ustring("ASCII"))
         gen = MemorableStringGen::ASCII;
-    else {
-        std::cerr << "Invalid ustring in ustringToGenSetting function call." << std::endl;
-        throw 136;
-    }
+    else
+        throw std::runtime_error("Invalid ustring in ustringToGenSetting function call.");
 
     return gen;
 }

@@ -10,11 +10,9 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     try {
         builder->add_from_file(uiFile);
     } catch (const Glib::FileError& ex) {
-        std::cerr << "FileError: " << ex.what() << std::endl;
-        throw 128;
+        throw std::runtime_error("FileError: " + ex.what());
     } catch (const Gtk::BuilderError& ex) {
-        std::cerr << "BuilderError: " << ex.what() << std::endl;
-        throw 129;
+        throw std::runtime_error("BuilderError: " + ex.what());
     }
 
     // TODO: is this really necessary though...
@@ -35,10 +33,9 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
 
     // Initialize pointers and signals for main window widgets
     builder->get_widget("main_window", main_window);
-    if (!main_window) {
-        std::cerr << "Unable to find Glade UI main_window." << std::endl;
-        throw 130;
-    }
+    if (!main_window)
+        throw std::runtime_error("Unable to find Glade UI main_window.");
+
     builder->get_widget("method_button", method_button);
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
@@ -89,10 +86,9 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
 
     // Initialize pointers and signals for settings window widgets
     builder->get_widget("settings_window", settings_window);
-    if (!main_window) {
-        std::cerr << "Unable to find Glade UI settings_window." << std::endl;
-        throw 130;
-    }
+    if (!main_window)
+        throw std::runtime_error("Unable to find Glade UI settings_window.");
+
     builder->get_widget("settings_generator", settings_generator);
     builder->get_widget("settings_leetify", settings_leetify);
     builder->get_widget("scale_leet_rate", scale_leet_rate);
