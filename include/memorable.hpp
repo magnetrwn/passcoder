@@ -23,14 +23,14 @@ public:
     void setGenerator(const genSetting setting);
     void setLeet(const bool enable);
     void setLeetRandomness(const double likelihood);
-    void setWordCount(const unsigned int value);
-    void setTotalLength(const unsigned int value);
+    void setWordCount(const uint value);
+    void setTotalLength(const uint value);
 
     genSetting getGenerator() const;
     bool getLeet() const;
     double getLeetRandomness() const;
-    unsigned int getWordCount() const;
-    unsigned int getTotalLength() const;
+    uint getWordCount() const;
+    uint getTotalLength() const;
 
     static genSetting ustringToGenSetting(const Glib::ustring &src);
 
@@ -39,16 +39,16 @@ private:
 
     std::vector<std::string> adjectives, nouns, numbers, phonetic;
 
-    std::uniform_int_distribution<unsigned int> adjVecDist;
-    std::uniform_int_distribution<unsigned int> nounsVecDist;
-    std::uniform_int_distribution<unsigned int> numbersVecDist;
-    std::uniform_int_distribution<unsigned int> phoneticVecDist;
+    std::uniform_int_distribution<uint> adjVecDist;
+    std::uniform_int_distribution<uint> nounsVecDist;
+    std::uniform_int_distribution<uint> numbersVecDist;
+    std::uniform_int_distribution<uint> phoneticVecDist;
 
     std::uniform_int_distribution<unsigned char> randUcharDist;
     std::bernoulli_distribution randBoolDist;
 
     bool leetEnabled;
-    unsigned int wordCount, totalLength;
+    uint wordCount, totalLength;
     double leetRandLevel;
     genSetting generate;
 

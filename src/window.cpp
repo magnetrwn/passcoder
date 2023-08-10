@@ -42,7 +42,9 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     builder->get_widget("method_button", method_button);
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
-    for (int row = INPUT1; row < fieldrows; row++) {
+    builder->get_widget("menu_about", menu_about);
+    builder->get_widget("about_window", about_window);
+    for (uint row = INPUT1; row < fieldrows; row++) {
         std::string nameBeginning, nameNumber;
         if (row < OUTPUT1) {
             nameBeginning = "input";
@@ -63,12 +65,27 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
         this->quit();
     });
-    for (int row = INPUT1; row < OUTPUT1; row++) {
+    for (uint row = INPUT1; row < OUTPUT1; row++) {
         safe_connect_signal(std::get<BUTTON>(fields[row]),
         std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
             std::get<WindowUI::FieldsIndex::FIELD>(fields[row])->set_text(this->memorable.get());
         });
     }
+    safe_connect_signal(menu_about, menu_about->signal_activate(), [this] {
+        this->about_window->show();
+    });
+    safe_connect_signal_rid(about_window, about_window->signal_response(),
+    [this](int response_id, Gtk::AboutDialog * dialog) {
+        switch (response_id) {
+        case Gtk::RESPONSE_CLOSE:
+        case Gtk::RESPONSE_CANCEL:
+        case Gtk::RESPONSE_DELETE_EVENT:
+            dialog->hide();
+            break;
+        default:
+            break;
+        }
+    });
 
     // Initialize pointers and signals for settings window widgets
     builder->get_widget("settings_window", settings_window);

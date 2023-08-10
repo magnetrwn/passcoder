@@ -25,6 +25,7 @@ private:
 
     Gtk::MenuItem* menu_file_quit;
     Gtk::MenuItem* menu_edit_settings;
+    Gtk::MenuItem* menu_about;
 
     Gtk::Button* method_button;
 
@@ -33,6 +34,8 @@ private:
     enum FieldsIndex
     { LABEL, FIELD, BUTTON, fieldnum };
     std::vector<std::tuple<Gtk::Label*, Gtk::Entry*, Gtk::Button*>> fields;
+
+    Gtk::AboutDialog* about_window;
 
     // Settings window
     Gtk::Window* settings_window;

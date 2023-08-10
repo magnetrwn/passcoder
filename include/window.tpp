@@ -8,13 +8,20 @@ safe_connect_signal(WidgetClass* widget, SignalType signal, const Function& call
     if (widget) {
         const Glib::ustring content = widget->get_name();
         signal.connect([content, call_function]() {
-#ifdef DEBUG
-            std::cout << "Debug: Activated widget \"" << content << "\"." << std::endl;
-#endif
             call_function();
         });
-#ifdef DEBUG
-        std::cout << "Debug: Connected signal to widget \"" << content << "\"." << std::endl;
-#endif
+    }
+}
+
+// Alternate version for signal_response() or whenever response_id is necessary, used like this:
+// safe_connect_signal(widget, widget->signal_something(), [this](int response_id, Gtk::SomeWidget* something){...});
+template <typename WidgetClass, typename SignalType, typename Function>
+void
+safe_connect_signal_rid(WidgetClass* widget, SignalType signal, const Function& call_function) {
+    if (widget) {
+        const Glib::ustring content = widget->get_name();
+        signal.connect([content, call_function, widget](int response_id) {
+            call_function(response_id, widget);
+        });
     }
 }

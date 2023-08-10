@@ -2,16 +2,16 @@
 
 MemorableStringGen::MemorableStringGen(const std::string &adjectivesFile, const std::string &nounsFile,
                                        const std::string &numbersFile, const std::string &phoneticFile)
-    : mt(static_cast<unsigned int>(std::time(nullptr))),
+    : mt(static_cast<uint>(std::time(nullptr))),
       adjectives(CSVUtil::readCSV(adjectivesFile)),
       nouns(CSVUtil::readCSV(nounsFile)),
       numbers(CSVUtil::readCSV(numbersFile)),
       phonetic(CSVUtil::readCSV(phoneticFile)) {
 
-    adjVecDist = std::uniform_int_distribution<unsigned int>(0, adjectives.size() - 1);
-    nounsVecDist = std::uniform_int_distribution<unsigned int>(0, nouns.size() - 1);
-    numbersVecDist = std::uniform_int_distribution<unsigned int>(0, numbers.size() - 1);
-    phoneticVecDist = std::uniform_int_distribution<unsigned int>(0, phonetic.size() - 1);
+    adjVecDist = std::uniform_int_distribution<uint>(0, adjectives.size() - 1);
+    nounsVecDist = std::uniform_int_distribution<uint>(0, nouns.size() - 1);
+    numbersVecDist = std::uniform_int_distribution<uint>(0, numbers.size() - 1);
+    phoneticVecDist = std::uniform_int_distribution<uint>(0, phonetic.size() - 1);
 
     randUcharDist = std::uniform_int_distribution<unsigned char>(0, 255);
 
@@ -52,20 +52,20 @@ MemorableStringGen::get() {
         break;
     case PHONETIC:
         phrase += (phonetic[phoneticVecDist(mt)]);
-        for (int i = 0; i < wordCount - 1; i++)
+        for (uint i = 0; i < wordCount - 1; i++)
             phrase += " " + phonetic[phoneticVecDist(mt)];
         break;
     case NUMBERS:
         phrase += (numbers[numbersVecDist(mt)]);
-        for (int i = 0; i < wordCount - 1; i++)
+        for (uint i = 0; i < wordCount - 1; i++)
             phrase += " " + numbers[numbersVecDist(mt)];
         break;
     case HEXADECIMAL:
-        for (int i = 0; i < totalLength; i++)
+        for (uint i = 0; i < totalLength; i++)
             phrase += hexCharacters[randUcharDist(mt) % 16];
         break;
     case ASCII:
-        for (int i = 0; i < totalLength; i++)
+        for (uint i = 0; i < totalLength; i++)
             phrase += static_cast<char>(randUcharDist(mt) % 93 + 33);
         break;
     default:
@@ -138,12 +138,12 @@ MemorableStringGen::setLeetRandomness(const double likelihood) {
 }
 
 void
-MemorableStringGen::setWordCount(const unsigned int value) {
+MemorableStringGen::setWordCount(const uint value) {
     wordCount = value;
 }
 
 void
-MemorableStringGen::setTotalLength(const unsigned int value) {
+MemorableStringGen::setTotalLength(const uint value) {
     totalLength = value;
 }
 
@@ -162,12 +162,12 @@ MemorableStringGen::getLeetRandomness() const {
     return leetRandLevel;
 }
 
-unsigned int
+uint
 MemorableStringGen::getWordCount() const {
     return wordCount;
 }
 
-unsigned int
+uint
 MemorableStringGen::getTotalLength() const {
     return totalLength;
 }
