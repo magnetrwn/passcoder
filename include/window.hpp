@@ -39,6 +39,7 @@ private:
     Gtk::Scale* scale_length;
     Gtk::Scale* scale_numbers;
 
+    Gtk::Label* label_leet_rate;
     Gtk::Label* label_length;
     Gtk::Label* label_numbers;
 

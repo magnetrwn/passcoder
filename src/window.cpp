@@ -84,11 +84,16 @@ WindowUI::WindowUI(MemorableStringGen memorable)
     builder->get_widget("scale_leet_rate", scale_leet_rate);
     builder->get_widget("scale_length", scale_length);
     builder->get_widget("scale_numbers", scale_numbers);
+    builder->get_widget("label_leet_rate", label_leet_rate);
     builder->get_widget("label_length", label_length);
     builder->get_widget("label_numbers", label_numbers);
     builder->get_widget("settings_apply_button", settings_apply_button);
     builder->get_widget("settings_defaults_button", settings_defaults_button);
 
+    // Displays widgets as default settings
+    // TODO: default settings are not centralized, will need to refactor
+    scale_leet_rate->show();
+    label_leet_rate->show();
     scale_length->hide();
     label_length->hide();
     scale_numbers->hide();
@@ -116,7 +121,15 @@ WindowUI::WindowUI(MemorableStringGen memorable)
             this->label_numbers->hide();
         }
     });
-
+    safe_connect_signal(settings_leetify, settings_leetify->signal_toggled(), [this] {
+        if (this->settings_leetify->get_active()) {
+            scale_leet_rate->show();
+            label_leet_rate->show();
+        } else {
+            scale_leet_rate->hide();
+            label_leet_rate->hide();
+        }
+    });
     safe_connect_signal(settings_apply_button, settings_apply_button->signal_clicked(), [this] {
         this->memorable.setGenerator(MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id()));
         this->memorable.setLeet(this->settings_leetify->get_active());
