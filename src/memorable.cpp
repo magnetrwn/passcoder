@@ -17,52 +17,12 @@ MemorableStringGen::MemorableStringGen(const std::string &adjectivesFile, const 
 
     // These are set the same as the GtkAdjustment and settings menu widgets
     generate = ADJ_AND_NOUN;
-    randBoolDist = std::bernoulli_distribution(0.167);
+    leetRandLevel = 0.167;
     leetEnabled = true;
     wordCount = 10;
     totalLength = 32;
-}
 
-void
-MemorableStringGen::setGenerator(const genSetting setting) {
-#ifdef DEBUG
-    std::cerr << "Debug: Generator Setting: " << static_cast<int>(setting) << std::endl;
-#endif
-    generate = setting;
-}
-
-void
-MemorableStringGen::setLeet(const bool enable) {
-#ifdef DEBUG
-    std::cerr << "Debug: Leet Enabled: " << enable << std::endl;
-#endif
-    leetEnabled = enable;
-}
-
-void
-MemorableStringGen::setRandomness(const double likelihood) {
-    if (likelihood < 0.0 or likelihood > 1.0)
-        return;
-#ifdef DEBUG
-    std::cerr << "Debug: Likelihood: " << likelihood << std::endl;
-#endif
-    randBoolDist = std::bernoulli_distribution(likelihood);
-}
-
-void
-MemorableStringGen::setWordCount(const unsigned int value) {
-#ifdef DEBUG
-    std::cerr << "Debug: Word Count: " << value << std::endl;
-#endif
-    wordCount = value;
-}
-
-void
-MemorableStringGen::setTotalLength(const unsigned int value) {
-#ifdef DEBUG
-    std::cerr << "Debug: Total Length: " << value << std::endl;
-#endif
-    totalLength = value;
+    randBoolDist = std::bernoulli_distribution(leetRandLevel);
 }
 
 std::string
@@ -155,4 +115,59 @@ MemorableStringGen::toLeet(const std::string &src) {
             letter = leetReplacements[std::tolower(letter) - 'a'];
     }
     return phrase;
+}
+
+// Getters and setters
+
+void
+MemorableStringGen::setGenerator(const genSetting setting) {
+    generate = setting;
+}
+
+void
+MemorableStringGen::setLeet(const bool enable) {
+    leetEnabled = enable;
+}
+
+void
+MemorableStringGen::setLeetRandomness(const double likelihood) {
+    if (likelihood < 0.0 || likelihood > 1.0)
+        return;
+    leetRandLevel = likelihood;
+    randBoolDist = std::bernoulli_distribution(likelihood);
+}
+
+void
+MemorableStringGen::setWordCount(const unsigned int value) {
+    wordCount = value;
+}
+
+void
+MemorableStringGen::setTotalLength(const unsigned int value) {
+    totalLength = value;
+}
+
+MemorableStringGen::genSetting
+MemorableStringGen::getGenerator() const {
+    return generate;
+}
+
+bool
+MemorableStringGen::getLeet() const {
+    return leetEnabled;
+}
+
+double
+MemorableStringGen::getLeetRandomness() const {
+    return leetRandLevel;
+}
+
+unsigned int
+MemorableStringGen::getWordCount() const {
+    return wordCount;
+}
+
+unsigned int
+MemorableStringGen::getTotalLength() const {
+    return totalLength;
 }

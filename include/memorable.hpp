@@ -22,9 +22,15 @@ public:
 
     void setGenerator(const genSetting setting);
     void setLeet(const bool enable);
-    void setRandomness(const double likelihood);
+    void setLeetRandomness(const double likelihood);
     void setWordCount(const unsigned int value);
     void setTotalLength(const unsigned int value);
+
+    genSetting getGenerator() const;
+    bool getLeet() const;
+    double getLeetRandomness() const;
+    unsigned int getWordCount() const;
+    unsigned int getTotalLength() const;
 
     static genSetting ustringToGenSetting(const Glib::ustring &src);
 
@@ -43,6 +49,7 @@ private:
 
     bool leetEnabled;
     unsigned int wordCount, totalLength;
+    double leetRandLevel;
     genSetting generate;
 
     std::string toLeet(const std::string &src);
