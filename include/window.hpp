@@ -8,6 +8,12 @@
 #include "memorable.hpp"
 
 class WindowUI : public Gtk::Window {
+public:
+    // Constructor
+    WindowUI(const std::string &uiFile, MemorableStringGen memorable);
+    void run();
+    void quit();
+
 private:
     MemorableStringGen memorable;
 
@@ -45,12 +51,6 @@ private:
 
     Gtk::Button* settings_apply_button;
     Gtk::Button* settings_defaults_button;
-
-public:
-    // Constructor
-    WindowUI(const std::string &uiFile, MemorableStringGen memorable);
-    void run();
-    void quit();
 };
 
 #include "window.tpp"

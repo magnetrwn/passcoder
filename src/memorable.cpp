@@ -104,7 +104,9 @@ MemorableStringGen::get() {
         for (int i = 0; i < totalLength; i++)
             phrase += hexCharacters[randUcharDist(mt) % 16];
         break;
-    case ASCII85:
+    case ASCII:
+        for (int i = 0; i < totalLength; i++)
+            phrase += static_cast<char>(randUcharDist(mt) % 93 + 33);
         break;
     default:
         std::cerr << "Invalid generator for MemorableStringGen." << std::endl;
@@ -131,8 +133,8 @@ MemorableStringGen::ustringToGenSetting(const Glib::ustring &src) {
         gen = MemorableStringGen::NUMBERS;
     else if (src == Glib::ustring("HEXADECIMAL"))
         gen = MemorableStringGen::HEXADECIMAL;
-    else if (src == Glib::ustring("ASCII85"))
-        gen = MemorableStringGen::ASCII85;
+    else if (src == Glib::ustring("ASCII"))
+        gen = MemorableStringGen::ASCII;
     else {
         std::cerr << "Invalid ustring in ustringToGenSetting function call." << std::endl;
         throw 136;

@@ -831,7 +831,7 @@
               <item id="PHONETIC" translatable="yes">Phonetic Alphabet</item>
               <item id="NUMBERS" translatable="yes">Number Literals</item>
               <item id="HEXADECIMAL" translatable="yes">Hexadecimal String</item>
-              <item id="ASCII85" translatable="yes">ASCII85 String</item>
+              <item id="ASCII" translatable="yes">ASCII String</item>
             </items>
           </object>
           <packing>

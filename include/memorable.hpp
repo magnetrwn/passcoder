@@ -16,7 +16,7 @@ class MemorableStringGen {
 public:
     MemorableStringGen(const std::string &adjectivesFile, const std::string &nounsFile,
                        const std::string &numbersFile, const std::string &phoneticFile);
-    enum genSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII85, gensettings };
+    enum genSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII, gensettings };
 
     std::string get();
 

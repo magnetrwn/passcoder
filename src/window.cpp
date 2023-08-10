@@ -114,7 +114,7 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
             this->label_length->hide();
             this->scale_numbers->show();
             this->label_numbers->show();
-        } else if (setting == MemorableStringGen::HEXADECIMAL or setting == MemorableStringGen::ASCII85) {
+        } else if (setting == MemorableStringGen::HEXADECIMAL or setting == MemorableStringGen::ASCII) {
             this->scale_length->show();
             this->label_length->show();
             this->scale_numbers->hide();
