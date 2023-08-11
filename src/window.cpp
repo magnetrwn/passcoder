@@ -2,8 +2,10 @@
 
 // TODO: naming consistency!
 
-WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
-    : memorable(memorable) {
+WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, MemorableStringGen memorable)
+    : uiFile_(uiFile),
+      settingsFile_(settingsFile),
+      memorable(memorable) {
 
     // Setup GTKmm builder with Glade UI file
     builder = Gtk::Builder::create();
@@ -36,6 +38,13 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     if (!main_window)
         throw std::runtime_error("Unable to find Glade UI main_window.");
 
+    std::map<std::string, std::string> windowSettingsMap;
+    windowSettingsMap = JSONUtil::getDictMap(JSONUtil::readJSON(settingsFile_), "window");
+    int width, height;
+    width = std::stoul(windowSettingsMap["width"]);
+    height = std::stoul(windowSettingsMap["height"]);
+    main_window->set_default_size(width, height);
+
     builder->get_widget("method_button", method_button);
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
@@ -62,6 +71,10 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
     safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
         this->quit();
     });
+    safe_connect_signal(main_window, main_window->signal_hide(), [this] {
+        this->quit();
+    });
+
     for (uint row = INPUT1; row < OUTPUT1; row++) {
         safe_connect_signal(std::get<BUTTON>(fields[row]),
         std::get<BUTTON>(fields[row])->signal_clicked(), [this, row] {
@@ -172,5 +185,14 @@ WindowUI::run() {
 
 void
 WindowUI::quit() {
+    std::map<std::string, std::string> windowSettingsMap;
+
+    int width, height;
+    this->main_window->get_size(width, height);
+
+    windowSettingsMap["width"] = std::to_string(width);
+    windowSettingsMap["height"] = std::to_string(height);
+
+    JSONUtil::storeMapAsDict(settingsFile_, "window", windowSettingsMap);
     Gtk::Main::quit();
 }

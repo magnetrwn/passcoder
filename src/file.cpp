@@ -57,10 +57,8 @@ std::map<std::string, std::string>
 JSONUtil::getDictMap(const boost::json::value &jsonValue, const std::string &dictName) {
     std::map<std::string, std::string> dictMap;
 
-    boost::json::error_code ec;
     boost::json::object rootObject;
     boost::json::object dictObject;
-
     try {
         rootObject = jsonValue.as_object();
         dictObject = rootObject.at(dictName).as_object();
@@ -68,6 +66,7 @@ JSONUtil::getDictMap(const boost::json::value &jsonValue, const std::string &dic
         throw std::runtime_error(std::string("Error accessing JSON dictionary or invalid name: ") + ex.what());
     }
 
+    boost::json::error_code ec;
     for (const auto& entry : dictObject) {
         dictMap[entry.key()] = boost::json::value_to<std::string>(entry.value());
 
@@ -81,7 +80,6 @@ JSONUtil::getDictMap(const boost::json::value &jsonValue, const std::string &dic
 void
 JSONUtil::storeMapAsDict(const std::string &filename, const std::string &dictName,
                          const std::map<std::string, std::string> &dictMap) {
-    // Read existing JSON content from the file
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         throw std::runtime_error("Unable to open file for reading: " + filename);
@@ -91,26 +89,20 @@ JSONUtil::storeMapAsDict(const std::string &filename, const std::string &dictNam
                             std::istreambuf_iterator<char>());
     inputFile.close();
 
-    // Parse the existing JSON content
     boost::json::value jsonValue = boost::json::parse(fileContent);
 
-    // Convert the JSON value to a mutable object
     boost::json::object jsonObject = jsonValue.as_object();
 
-    // Check if the dictionary exists
     if (jsonObject.find(dictName) == jsonObject.end()) {
         throw std::runtime_error("Dictionary '" + dictName + "' not found in JSON.");
     }
 
-    // Get the existing dictionary object
     boost::json::object &dictObject = jsonObject[dictName].as_object();
 
-    // Update the specific key-value pairs
     for (const auto &entry : dictMap) {
         dictObject[entry.first] = boost::json::value(entry.second);
     }
 
-    // Write the updated JSON back to the file
     std::ofstream outputFile(filename);
     if (!outputFile.is_open()) {
         throw std::runtime_error("Unable to open file for writing: " + filename);

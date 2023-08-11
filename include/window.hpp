@@ -3,20 +3,23 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include <stdexcept>
 
 #include <gtkmm.h>
 
 #include "memorable.hpp"
 
-class WindowUI : public Gtk::Window {
+class WindowUI {
 public:
     // Constructor
-    WindowUI(const std::string &uiFile, MemorableStringGen memorable);
+    WindowUI(const std::string &uiFile, const std::string &settingsFile, MemorableStringGen memorable);
     void run();
     void quit();
 
 private:
+    const std::string uiFile_, settingsFile_;
+
     MemorableStringGen memorable;
 
     // Glade UI builder
