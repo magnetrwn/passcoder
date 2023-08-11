@@ -12,9 +12,9 @@ public:
     enum bitNumber
     { AES128, AES256 };
     static std::string encCTR(const std::string &key, const std::string &iv, const std::string &plaintext,
-                              bitNumber bits = AES256);
+                              const bitNumber bits = AES256);
     static std::string decCTR(const std::string &key, const std::string &iv, const std::string &ciphertext,
-                              bitNumber bits = AES256);
+                              const bitNumber bits = AES256);
 };
 
 #endif

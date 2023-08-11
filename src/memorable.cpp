@@ -133,7 +133,7 @@ MemorableStringGen::toLeet(const std::string &src) {
         '4', 'B', 'C', 'D', '3', 'F', 'G', 'H', '1', 'J', 'K', 'L', 'M',
         'N', '0', 'P', 'Q', 'R', '5', '7', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
-    for (auto& letter : phrase) {
+    for (auto &letter : phrase) {
         if (randBoolDist(mt) and std::isalpha(letter))
             letter = leetReplacements[std::tolower(letter) - 'a'];
     }

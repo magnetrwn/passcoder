@@ -3,7 +3,7 @@
 // safe_connect_signal(widget, widget->signal_something(), [this](...){...});
 template <typename WidgetClass, typename SignalType, typename Function>
 void
-safe_connect_signal(WidgetClass* widget, SignalType signal, const Function& call_function) {
+safe_connect_signal(WidgetClass *widget, SignalType signal, const Function &call_function) {
     if (widget) {
         signal.connect([call_function](auto&&... args) {
             call_function(std::forward<decltype(args)>(args)...);
@@ -15,7 +15,7 @@ safe_connect_signal(WidgetClass* widget, SignalType signal, const Function& call
 // safe_connect_signal(widget, widget->signal_something(), [this](int response_id, Gtk::SomeWidget* something){...});
 template <typename WidgetClass, typename SignalType, typename Function>
 void
-safe_connect_signal_rid(WidgetClass* widget, SignalType signal, const Function& call_function) {
+safe_connect_signal_rid(WidgetClass *widget, SignalType signal, const Function &call_function) {
     if (widget) {
         const Glib::ustring content = widget->get_name();
         signal.connect([content, call_function, widget](int response_id) {

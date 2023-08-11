@@ -11,9 +11,9 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     builder = Gtk::Builder::create();
     try {
         builder->add_from_file(uiFile);
-    } catch (const Glib::FileError& ex) {
+    } catch (const Glib::FileError &ex) {
         throw std::runtime_error("FileError: " + ex.what());
-    } catch (const Gtk::BuilderError& ex) {
+    } catch (const Gtk::BuilderError &ex) {
         throw std::runtime_error("BuilderError: " + ex.what());
     }
 
@@ -27,7 +27,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     menu_edit_settings = nullptr;
 
     fields.resize(fieldrows);
-    for (auto& field_row : fields) {
+    for (auto &field_row : fields) {
         std::get<LABEL>(field_row) = nullptr;
         std::get<FIELD>(field_row) = nullptr;
         std::get<BUTTON>(field_row) = nullptr;

@@ -1,11 +1,11 @@
 #include "crypto.hpp"
 
 std::string
-AESTools::encCTR(const std::string &key, const std::string &iv, const std::string &plaintext, bitNumber bits) {
+AESTools::encCTR(const std::string &key, const std::string &iv, const std::string &plaintext, const bitNumber bits) {
     std::string ciphertext;
-    const unsigned char *keyBytes = reinterpret_cast<const unsigned char*>(key.c_str());
-    const unsigned char *ivBytes = reinterpret_cast<const unsigned char*>(iv.c_str());
-    const unsigned char *ciphertextBytes = reinterpret_cast<const unsigned char*>(plaintext.c_str());
+    const unsigned char *keyBytes = reinterpret_cast<const unsigned char *>(key.c_str());
+    const unsigned char *ivBytes = reinterpret_cast<const unsigned char *>(iv.c_str());
+    const unsigned char *ciphertextBytes = reinterpret_cast<const unsigned char *>(plaintext.c_str());
     EVP_CIPHER_CTX *ctx;
     ctx = EVP_CIPHER_CTX_new();
 
@@ -18,11 +18,11 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
         throw std::runtime_error("Invalid bits number requested for AESTools::encCTR().");
 
     int len;
-    unsigned char *ciphertextStart = reinterpret_cast<unsigned char*>(&ciphertext[0]);
+    unsigned char *ciphertextStart = reinterpret_cast<unsigned char *>(&ciphertext[0]);
     EVP_EncryptUpdate(ctx, ciphertextStart, &len, ciphertextBytes, plaintext.size());
 
     int final_len = len;
-    unsigned char *ciphertextFinal = reinterpret_cast<unsigned char*>(&ciphertext[len]);
+    unsigned char *ciphertextFinal = reinterpret_cast<unsigned char *>(&ciphertext[len]);
     EVP_EncryptFinal_ex(ctx, ciphertextFinal, &len);
     final_len += len;
 
@@ -34,6 +34,6 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
 // Passthrough
 std::string
 AESTools::decCTR(const std::string &key, const std::string &iv, const std::string &ciphertext,
-                 enum bitNumber bits) {
+                 const bitNumber bits) {
     return encCTR(key, iv, ciphertext, bits);
 }

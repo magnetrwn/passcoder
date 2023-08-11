@@ -43,7 +43,7 @@ JSONUtil::getListValues(const boost::json::value &jsonValue, const std::string &
     if (ec)
         throw std::runtime_error("Error accessing JSON list: " + ec.message());
 
-    for (const auto& element : list) {
+    for (const auto &element : list) {
         values.push_back(boost::json::value_to<std::string>(element));
 
         if (ec)
@@ -67,7 +67,7 @@ JSONUtil::getDictMap(const boost::json::value &jsonValue, const std::string &dic
     }
 
     boost::json::error_code ec;
-    for (const auto& entry : dictObject) {
+    for (const auto &entry : dictObject) {
         dictMap[entry.key()] = boost::json::value_to<std::string>(entry.value());
 
         if (ec)
@@ -80,6 +80,8 @@ JSONUtil::getDictMap(const boost::json::value &jsonValue, const std::string &dic
 void
 JSONUtil::storeMapAsDict(const std::string &filename, const std::string &dictName,
                          const std::map<std::string, std::string> &dictMap) {
+
+    // TODO: ugly, will reformat
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {
         throw std::runtime_error("Unable to open file for reading: " + filename);
@@ -111,7 +113,6 @@ JSONUtil::storeMapAsDict(const std::string &filename, const std::string &dictNam
     outputFile << jsonObject;
     outputFile.close();
 }
-
 
 /*
 void

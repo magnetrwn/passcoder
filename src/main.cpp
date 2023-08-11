@@ -3,7 +3,7 @@
 #include <iostream>
 
 int
-main(int argc, char* argv[]) {
+main(int argc, char *argv[]) {
 
     MemorableStringGen memorable("res/strings.json", "res/settings.json");
 
