@@ -155,15 +155,13 @@ WindowUI::WindowUI(const std::string &uiFile, MemorableStringGen memorable)
         this->memorable.setLeetRandomness(this->scale_leet_rate->get_value());
         this->memorable.setWordCount(this->scale_numbers->get_value());
         this->memorable.setTotalLength(this->scale_length->get_value());
+        this->memorable.storeAsJSONDict();
         this->settings_window->hide();
     });
     safe_connect_signal(settings_defaults_button, settings_defaults_button->signal_clicked(), [this] {
         // TODO: default settings are not centralized, will need to refactor
-        this->settings_generator->set_active(0);
-        this->settings_leetify->set_active(1);
-        this->scale_leet_rate->set_value(0.167);
-        this->scale_length->set_value(32);
-        this->scale_numbers->set_value(10);
+        this->memorable.setToJSONDict("memorableDefaults");
+        this->settings_window->hide();
     });
 }
 

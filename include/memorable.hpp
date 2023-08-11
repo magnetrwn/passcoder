@@ -16,7 +16,8 @@
 
 class MemorableStringGen {
 public:
-    MemorableStringGen(const std::string &stringsFile);
+    MemorableStringGen(const std::string &stringsFile, const std::string &settingsFile);
+
     enum genSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII, gensettings };
 
     std::string get();
@@ -27,15 +28,21 @@ public:
     void setWordCount(const uint value);
     void setTotalLength(const uint value);
 
+    void setToJSONDict(const std::string &dictName); // settingsFile_
+
     genSetting getGenerator() const;
     bool getLeet() const;
     double getLeetRandomness() const;
     uint getWordCount() const;
     uint getTotalLength() const;
 
+    void storeAsJSONDict(/*const std::string &dictName*/); // settingsFile_
+
     static genSetting ustringToGenSetting(const Glib::ustring &src);
 
 private:
+    const std::string stringsFile_, settingsFile_;
+
     std::mt19937 mt;
 
     std::vector<std::string> adjectives, nouns, numbers, phonetic;

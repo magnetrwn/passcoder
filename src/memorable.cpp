@@ -1,14 +1,16 @@
 #include "memorable.hpp"
 
-MemorableStringGen::MemorableStringGen(const std::string &stringsFile)
-    : mt(static_cast<uint>(std::time(nullptr))) {
+MemorableStringGen::MemorableStringGen(const std::string &stringsFile, const std::string &settingsFile)
+    : stringsFile_(stringsFile),
+      settingsFile_(settingsFile),
+      mt(static_cast<uint>(std::time(nullptr))) {
 
-    const boost::json::object rootJSON = JSONUtil::readJSON(stringsFile).as_object();
+    const boost::json::object stringsJSON = JSONUtil::readJSON(stringsFile_).as_object();
 
-    adjectives = JSONUtil::getListValues(rootJSON, "adjectives");
-    nouns = JSONUtil::getListValues(rootJSON, "nouns");
-    numbers = JSONUtil::getListValues(rootJSON, "numbers");
-    phonetic = JSONUtil::getListValues(rootJSON, "phonetic");
+    adjectives = JSONUtil::getListValues(stringsJSON, "adjectives");
+    nouns = JSONUtil::getListValues(stringsJSON, "nouns");
+    numbers = JSONUtil::getListValues(stringsJSON, "numbers");
+    phonetic = JSONUtil::getListValues(stringsJSON, "phonetic");
 
     adjVecDist = std::uniform_int_distribution<uint>(0, adjectives.size() - 1);
     nounsVecDist = std::uniform_int_distribution<uint>(0, nouns.size() - 1);
@@ -17,14 +19,37 @@ MemorableStringGen::MemorableStringGen(const std::string &stringsFile)
 
     randUcharDist = std::uniform_int_distribution<unsigned char>(0, 255);
 
-    // These are set the same as the GtkAdjustment and settings menu widgets
-    generate = ADJ_AND_NOUN;
-    leetRandLevel = 0.167;
-    leetEnabled = true;
-    wordCount = 10;
-    totalLength = 32;
+    MemorableStringGen::setToJSONDict("memorable");
 
     randBoolDist = std::bernoulli_distribution(leetRandLevel);
+}
+
+void
+MemorableStringGen::setToJSONDict(const std::string &dictName) {
+    const boost::json::object settingsJSON = JSONUtil::readJSON(settingsFile_).as_object();
+    std::map<std::string, std::string> settingsMap = JSONUtil::getDictMap(settingsJSON, dictName);
+
+    try {
+        generate = static_cast<MemorableStringGen::genSetting>(std::stoul(settingsMap["generate"]));
+        leetRandLevel = std::stof(settingsMap["leetRandLevel"]);
+        leetEnabled = settingsMap["leetEnabled"] == "1";
+        wordCount = std::stoul(settingsMap["wordCount"]);
+        totalLength = std::stoul(settingsMap["totalLength"]);
+
+    } catch (const std::exception &ex) {
+        throw std::runtime_error(std::string("Error parsing settings map: ") + ex.what());
+    }
+}
+
+void
+MemorableStringGen::storeAsJSONDict() {
+    std::map<std::string, std::string> storeMap;
+    storeMap["generate"] = std::to_string(generate);
+    storeMap["leetRandLevel"] = std::to_string(leetRandLevel);
+    storeMap["leetEnabled"] = std::to_string(leetEnabled);
+    storeMap["wordCount"] = std::to_string(wordCount);
+    storeMap["totalLength"] = std::to_string(totalLength);
+    JSONUtil::storeMapAsDict(settingsFile_, "memorable", storeMap);
 }
 
 std::string
