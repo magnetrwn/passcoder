@@ -1,6 +1,7 @@
 # Setup project
 cmake_minimum_required(VERSION 3.12.0)
 project(passcoder)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(PkgConfig REQUIRED)
 find_package(OpenSSL 1.1.0 REQUIRED)
