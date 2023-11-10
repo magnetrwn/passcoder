@@ -176,6 +176,10 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         this->memorable.setToJSONDict("memorableDefaults");
         this->settings_window->hide();
     });
+
+    safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
+
+    });
 }
 
 void
