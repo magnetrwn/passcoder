@@ -7,6 +7,9 @@
 #include <openssl/rand.h>
 #include <stdexcept>
 
+#include "convert.hpp"
+
+
 class AESTools {
 public:
     enum BitNumber { AES128, AES256 };

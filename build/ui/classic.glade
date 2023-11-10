@@ -308,9 +308,9 @@
                     <property name="can-focus">False</property>
                     <property name="active">0</property>
                     <items>
-                      <item translatable="yes">AES Counter Mode (128-bit)</item>
-                      <item translatable="yes">AES Counter Mode (256-bit)</item>
-                      <item translatable="yes">MD5 Hash</item>
+                      <item id="AES_CTR_128" translatable="yes">AES Counter Mode (128-bit)</item>
+                      <item id="AES_CTR_256" translatable="yes">AES Counter Mode (256-bit)</item>
+                      <item id="MD5" translatable="yes">MD5 Hash</item>
                     </items>
                   </object>
                   <packing>

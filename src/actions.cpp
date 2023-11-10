@@ -8,21 +8,25 @@ ActionTransform::ustringToAction(const Glib::ustring &src) {
     throw std::runtime_error("Invalid action requested for ActionTransform::ustringToAction().");
 }
 
-std::vector<std::string>
+std::vector<std::pair<std::string, std::string>>
 ActionTransform::transform(const std::vector<std::string> &input, const Actions action) {
-    std::vector<std::string> output;
+    std::vector<std::pair<std::string, std::string>> output;
+    std::string hexCiphertext;
+    AESTools::BitNumber bits = AESTools::BitNumber::AES256;
 
     switch (action) {
         case AES128:
-            output.reserve(1);
-            output.push_back(AESTools::encCTR(input[0], input[1], input[2], AESTools::BitNumber::AES128));
-            break;
+            bits = AESTools::BitNumber::AES128;
+            [[fallthrough]];
         case AES256:
             output.reserve(1);
-            output.push_back(AESTools::encCTR(input[0], input[1], input[2], AESTools::BitNumber::AES256));
+            hexCiphertext = AESTools::encCTR(input[0], input[1], input[2], bits);
+            output.emplace_back(std::pair<std::string, std::string>("Hex Cipher", hexCiphertext));
             break;
         case MD5:
-            //output.push_back(MD5Tools::md5(input[0]));
+            output.reserve(1);
+            hexCiphertext = HashTools::md5(input[0]);
+            output.emplace_back(std::pair<std::string, std::string>("Hex Hash", hexCiphertext));
             break;
         default:
             throw std::runtime_error("Invalid action requested for ActionTransform::transform().");

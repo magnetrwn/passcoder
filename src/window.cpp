@@ -66,8 +66,11 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         std::string buttonName = nameBeginning + nameNumber + "_button";
 
         builder->get_widget(labelName, std::get<LABEL>(fields[static_cast<FieldRowIndex>(row)]));
+        std::get<LABEL>(fields[static_cast<FieldRowIndex>(row)])->hide();
         builder->get_widget(fieldName, std::get<FIELD>(fields[static_cast<FieldRowIndex>(row)]));
+        std::get<FIELD>(fields[static_cast<FieldRowIndex>(row)])->hide();
         builder->get_widget(buttonName, std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)]));
+        std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)])->hide();
     }
 
     safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
@@ -135,9 +138,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     });
     safe_connect_signal(settings_generator, settings_generator->signal_changed(), [this] {
         MemorableStringGen::GenSetting setting = MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id());
-#ifdef DEBUG
-        std::cerr << "Debug: setting: " << setting << std::endl;
-#endif
+
         if (setting == MemorableStringGen::ADJ_AND_NOUN or setting == MemorableStringGen::PHONETIC_NOUN) {
             this->scale_length->hide();
             this->label_length->hide();
@@ -182,11 +183,16 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
         std::vector<std::string> inputs;
         for (uint row = INPUT1; row < OUTPUT1; row++)
-            inputs.push_back(std::get<FIELD>(fields[row])->get_text());
+            inputs.emplace_back(std::get<FIELD>(fields[row])->get_text().raw());
 
-        std::vector<std::string> outputs = ActionTransform::transform(inputs, ActionTransform::ustringToAction(this->method_select->get_active_id()));
-        for (uint row = OUTPUT1; row < fieldrows; row++)
-            std::get<FIELD>(fields[row])->set_text(outputs[row - OUTPUT1]);
+        std::vector<std::pair<std::string, std::string>> outputs = ActionTransform::transform(inputs, ActionTransform::ustringToAction(this->method_select->get_active_id()));
+
+        uint row = OUTPUT1;
+        for (std::pair<std::string, std::string> output : outputs) {
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(output.first);
+            std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(output.second);
+            row++;
+        }
     });
 }
 

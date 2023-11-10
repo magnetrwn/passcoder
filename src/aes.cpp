@@ -28,7 +28,7 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
 
     EVP_CIPHER_CTX_free(ctx);
     ciphertext.resize(final_len);
-    return ciphertext;
+    return StringUtils::toHex(ciphertext);
 }
 
 // Passthrough

@@ -10,7 +10,7 @@ CSVUtil::readCSV(const std::string &filename) {
 
     std::string line;
     while (std::getline(file, line)) {
-        destVector.push_back(line);
+        destVector.emplace_back(line);
     }
 
     return destVector;
@@ -44,7 +44,7 @@ JSONUtil::getListValues(const boost::json::value &jsonValue, const std::string &
         throw std::runtime_error("Error accessing JSON list: " + ec.message());
 
     for (const auto &element : list) {
-        values.push_back(boost::json::value_to<std::string>(element));
+        values.emplace_back(boost::json::value_to<std::string>(element));
 
         if (ec)
             throw std::runtime_error("Error parsing JSON list: " + ec.message());
