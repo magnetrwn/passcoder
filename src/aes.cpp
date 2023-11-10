@@ -1,7 +1,7 @@
 #include "aes.hpp"
 
 std::string
-AESTools::encCTR(const std::string &key, const std::string &iv, const std::string &plaintext, const bitNumber bits) {
+AESTools::encCTR(const std::string &key, const std::string &iv, const std::string &plaintext, const BitNumber bits) {
     std::string ciphertext;
     const unsigned char *keyBytes = reinterpret_cast<const unsigned char *>(key.c_str());
     const unsigned char *ivBytes = reinterpret_cast<const unsigned char *>(iv.c_str());
@@ -10,9 +10,9 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
     ctx = EVP_CIPHER_CTX_new();
 
     ciphertext.resize(plaintext.size() + EVP_MAX_BLOCK_LENGTH);
-    if (bits == AESTools::bitNumber::AES128)
+    if (bits == AESTools::BitNumber::AES128)
         EVP_EncryptInit_ex(ctx, EVP_aes_128_ctr(), nullptr, keyBytes, ivBytes);
-    else if (bits == AESTools::bitNumber::AES256)
+    else if (bits == AESTools::BitNumber::AES256)
         EVP_EncryptInit_ex(ctx, EVP_aes_256_ctr(), nullptr, keyBytes, ivBytes);
     else
         throw std::runtime_error("Invalid bits number requested for AESTools::encCTR().");
@@ -34,6 +34,6 @@ AESTools::encCTR(const std::string &key, const std::string &iv, const std::strin
 // Passthrough
 std::string
 AESTools::decCTR(const std::string &key, const std::string &iv, const std::string &ciphertext,
-                 const bitNumber bits) {
+                 const BitNumber bits) {
     return encCTR(key, iv, ciphertext, bits);
 }

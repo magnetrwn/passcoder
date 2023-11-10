@@ -30,7 +30,7 @@ MemorableStringGen::setToJSONDict(const std::string &dictName) {
     std::map<std::string, std::string> settingsMap = JSONUtil::getDictMap(settingsJSON, dictName);
 
     try {
-        generate = static_cast<MemorableStringGen::genSetting>(std::stoul(settingsMap["generate"]));
+        generate = static_cast<MemorableStringGen::GenSetting>(std::stoul(settingsMap["generate"]));
         leetRandLevel = std::stof(settingsMap["leetRandLevel"]);
         leetEnabled = settingsMap["leetEnabled"] == "1";
         wordCount = std::stoul(settingsMap["wordCount"]);
@@ -42,14 +42,14 @@ MemorableStringGen::setToJSONDict(const std::string &dictName) {
 }
 
 void
-MemorableStringGen::storeAsJSONDict() {
+MemorableStringGen::storeAsJSONDict(const std::string &dictName) {
     std::map<std::string, std::string> storeMap;
     storeMap["generate"] = std::to_string(generate);
     storeMap["leetRandLevel"] = std::to_string(leetRandLevel);
     storeMap["leetEnabled"] = std::to_string(leetEnabled);
     storeMap["wordCount"] = std::to_string(wordCount);
     storeMap["totalLength"] = std::to_string(totalLength);
-    JSONUtil::storeMapAsDict(settingsFile_, "memorable", storeMap);
+    JSONUtil::storeMapAsDict(settingsFile_, dictName, storeMap);
 }
 
 std::string
@@ -104,26 +104,12 @@ MemorableStringGen::get() {
     return phrase;
 }
 
-MemorableStringGen::genSetting
+MemorableStringGen::GenSetting
 MemorableStringGen::ustringToGenSetting(const Glib::ustring &src) {
-    MemorableStringGen::genSetting gen;
-
-    if (src == Glib::ustring("ADJ_AND_NOUN"))
-        gen = MemorableStringGen::ADJ_AND_NOUN;
-    else if (src == Glib::ustring("PHONETIC_NOUN"))
-        gen = MemorableStringGen::PHONETIC_NOUN;
-    else if (src == Glib::ustring("PHONETIC"))
-        gen = MemorableStringGen::PHONETIC;
-    else if (src == Glib::ustring("NUMBERS"))
-        gen = MemorableStringGen::NUMBERS;
-    else if (src == Glib::ustring("HEXADECIMAL"))
-        gen = MemorableStringGen::HEXADECIMAL;
-    else if (src == Glib::ustring("ASCII"))
-        gen = MemorableStringGen::ASCII;
-    else
-        throw std::runtime_error("Invalid ustring in ustringToGenSetting function call.");
-
-    return gen;
+    for (uint i = 0; i < gensettings; i++)
+        if (src == Glib::ustring(genSettingNames[i]))
+            return static_cast<GenSetting>(i);
+    throw std::runtime_error("Invalid ustring in ustringToGenSetting function call.");
 }
 
 std::string
@@ -143,7 +129,7 @@ MemorableStringGen::toLeet(const std::string &src) {
 // Getters and setters
 
 void
-MemorableStringGen::setGenerator(const genSetting setting) {
+MemorableStringGen::setGenerator(const GenSetting setting) {
     generate = setting;
 }
 
@@ -170,7 +156,7 @@ MemorableStringGen::setTotalLength(const uint value) {
     totalLength = value;
 }
 
-MemorableStringGen::genSetting
+MemorableStringGen::GenSetting
 MemorableStringGen::getGenerator() const {
     return generate;
 }

@@ -9,12 +9,12 @@
 
 class AESTools {
 public:
-    enum bitNumber { AES128, AES256 };
+    enum BitNumber { AES128, AES256 };
 
     static std::string encCTR(const std::string &key, const std::string &iv, const std::string &plaintext,
-                              const bitNumber bits = AES256);
+                              const BitNumber bits = AES256);
     static std::string decCTR(const std::string &key, const std::string &iv, const std::string &ciphertext,
-                              const bitNumber bits = AES256);
+                              const BitNumber bits = AES256);
 };
 
 #endif

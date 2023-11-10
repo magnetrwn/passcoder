@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "actions.hpp"
 
 // TODO: naming consistency!
 
@@ -45,6 +46,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     height = std::stoul(windowSettingsMap["height"]);
     main_window->set_default_size(width, height);
 
+    builder->get_widget("method_select", method_select);
     builder->get_widget("method_button", method_button);
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
@@ -63,9 +65,9 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         std::string fieldName = nameBeginning + nameNumber + "_field";
         std::string buttonName = nameBeginning + nameNumber + "_button";
 
-        builder->get_widget(labelName, std::get<LABEL>(fields[row]));
-        builder->get_widget(fieldName, std::get<FIELD>(fields[row]));
-        builder->get_widget(buttonName, std::get<BUTTON>(fields[row]));
+        builder->get_widget(labelName, std::get<LABEL>(fields[static_cast<FieldRowIndex>(row)]));
+        builder->get_widget(fieldName, std::get<FIELD>(fields[static_cast<FieldRowIndex>(row)]));
+        builder->get_widget(buttonName, std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)]));
     }
 
     safe_connect_signal(menu_file_quit, menu_file_quit->signal_activate(), [this] {
@@ -85,7 +87,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         this->about_window->show();
     });
     safe_connect_signal_rid(about_window, about_window->signal_response(),
-    [this](int response_id, Gtk::AboutDialog * dialog) {
+    [this] (int response_id, Gtk::AboutDialog * dialog) {
         switch (response_id) {
         case Gtk::RESPONSE_CLOSE:
         case Gtk::RESPONSE_CANCEL:
@@ -132,7 +134,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         this->settings_window->show();
     });
     safe_connect_signal(settings_generator, settings_generator->signal_changed(), [this] {
-        MemorableStringGen::genSetting setting = MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id());
+        MemorableStringGen::GenSetting setting = MemorableStringGen::ustringToGenSetting(this->settings_generator->get_active_id());
 #ifdef DEBUG
         std::cerr << "Debug: setting: " << setting << std::endl;
 #endif
@@ -178,7 +180,13 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
     });
 
     safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
+        std::vector<std::string> inputs;
+        for (uint row = INPUT1; row < OUTPUT1; row++)
+            inputs.push_back(std::get<FIELD>(fields[row])->get_text());
 
+        std::vector<std::string> outputs = ActionTransform::transform(inputs, ActionTransform::ustringToAction(this->method_select->get_active_id()));
+        for (uint row = OUTPUT1; row < fieldrows; row++)
+            std::get<FIELD>(fields[row])->set_text(outputs[row - OUTPUT1]);
     });
 }
 

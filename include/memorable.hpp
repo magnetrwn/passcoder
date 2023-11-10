@@ -18,11 +18,21 @@ class MemorableStringGen {
 public:
     MemorableStringGen(const std::string &stringsFile, const std::string &settingsFile);
 
-    enum genSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII, gensettings };
+    enum GenSetting { ADJ_AND_NOUN, PHONETIC_NOUN, PHONETIC, NUMBERS, HEXADECIMAL, ASCII, gensettings };
+
+    // Keep in same order as enum
+    static constexpr const char *genSettingNames[] = {
+        "ADJ_AND_NOUN",
+        "PHONETIC_NOUN",
+        "PHONETIC",
+        "NUMBERS",
+        "HEXADECIMAL",
+        "ASCII"
+    };
 
     std::string get();
 
-    void setGenerator(const genSetting setting);
+    void setGenerator(const GenSetting setting);
     void setLeet(const bool enable);
     void setLeetRandomness(const double likelihood);
     void setWordCount(const uint value);
@@ -30,15 +40,15 @@ public:
 
     void setToJSONDict(const std::string &dictName); // settingsFile_
 
-    genSetting getGenerator() const;
+    GenSetting getGenerator() const;
     bool getLeet() const;
     double getLeetRandomness() const;
     uint getWordCount() const;
     uint getTotalLength() const;
 
-    void storeAsJSONDict(/*const std::string &dictName*/); // settingsFile_
+    void storeAsJSONDict(const std::string &dictName = "memorable"); // settingsFile_
 
-    static genSetting ustringToGenSetting(const Glib::ustring &src);
+    static GenSetting ustringToGenSetting(const Glib::ustring &src);
 
 private:
     const std::string stringsFile_, settingsFile_;
@@ -58,7 +68,7 @@ private:
     bool leetEnabled;
     uint wordCount, totalLength;
     double leetRandLevel;
-    genSetting generate;
+    GenSetting generate;
 
     std::string toLeet(const std::string &src);
 };

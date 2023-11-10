@@ -9,10 +9,10 @@
 #include <gtkmm.h>
 
 #include "memorable.hpp"
+#include "actions.hpp"
 
 class WindowUI {
 public:
-    // Constructor
     WindowUI(const std::string &uiFile, const std::string &settingsFile, MemorableStringGen memorable);
     void run();
     void quit();
@@ -23,9 +23,11 @@ private:
     MemorableStringGen memorable;
 
     // Glade UI builder
+
     Glib::RefPtr<Gtk::Builder> builder;
 
     // Main window
+
     Gtk::Window *main_window;
 
     Gtk::MenuItem *menu_file_quit;
@@ -33,6 +35,7 @@ private:
     Gtk::MenuItem *menu_about;
 
     Gtk::Button *method_button;
+    Gtk::ComboBoxText *method_select;
 
     enum FieldRowIndex
     { INPUT1, INPUT2, INPUT3, INPUT4, OUTPUT1, OUTPUT2, OUTPUT3, OUTPUT4, fieldrows };
@@ -43,6 +46,7 @@ private:
     Gtk::AboutDialog *about_window;
 
     // Settings window
+
     Gtk::Window *settings_window;
 
     Gtk::ComboBoxText *settings_generator;
