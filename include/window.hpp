@@ -8,6 +8,7 @@
 
 #include <gtkmm.h>
 
+#include "gtkmm/label.h"
 #include "memorable.hpp"
 #include "actions.hpp"
 
@@ -36,6 +37,10 @@ private:
 
     Gtk::Button *method_button;
     Gtk::ComboBoxText *method_select;
+
+    Gtk::Label *label_inputs;
+    Gtk::Label *label_outputs;
+    Gtk::Label *status_label;
 
     enum FieldRowIndex
     { INPUT1, INPUT2, INPUT3, INPUT4, OUTPUT1, OUTPUT2, OUTPUT3, OUTPUT4, fieldrows };

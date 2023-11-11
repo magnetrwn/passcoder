@@ -110,7 +110,7 @@
   <object class="GtkWindow" id="main_window">
     <property name="can-focus">False</property>
     <property name="default-width">720</property>
-    <property name="default-height">600</property>
+    <property name="default-height">320</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -239,7 +239,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Input2:</property>
+                <property name="label" translatable="yes">Input2</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -251,7 +251,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Input1:</property>
+                <property name="label" translatable="yes">Input1</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -262,7 +262,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="vexpand">True</property>
+                <property name="margin-end">96</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -270,12 +270,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="label_inputs">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">end</property>
-                <property name="vexpand">True</property>
                 <property name="label" translatable="yes">Inputs</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -291,7 +290,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Method:</property>
+                <property name="label" translatable="yes">Method</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -306,7 +305,7 @@
                   <object class="GtkComboBoxText" id="method_select">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="active">0</property>
+                    <property name="hexpand">True</property>
                     <items>
                       <item id="AES_CTR_128" translatable="yes">AES Counter Mode (128-bit)</item>
                       <item id="AES_CTR_256" translatable="yes">AES Counter Mode (256-bit)</item>
@@ -348,6 +347,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-end">96</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -417,7 +417,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Output4:</property>
+                <property name="label" translatable="yes">Output4</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -555,7 +555,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Output3:</property>
+                <property name="label" translatable="yes">Output3</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -651,7 +651,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Output2:</property>
+                <property name="label" translatable="yes">Output2</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -663,7 +663,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Output1:</property>
+                <property name="label" translatable="yes">Output1</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -671,12 +671,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="label_outputs">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
                 <property name="valign">end</property>
-                <property name="vexpand">True</property>
                 <property name="label" translatable="yes">Outputs</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
@@ -691,7 +690,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="vexpand">True</property>
+                <property name="margin-end">96</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -703,7 +702,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Input3:</property>
+                <property name="label" translatable="yes">Input3</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -715,7 +714,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Input4:</property>
+                <property name="label" translatable="yes">Input4</property>
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -823,7 +822,7 @@
               <object class="GtkLabel" id="status_label">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Use enter-notify-event for the bar.</property>
+                <property name="label" translatable="yes">To start, select an algorithm to use.</property>
               </object>
               <packing>
                 <property name="expand">False</property>

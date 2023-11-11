@@ -18,8 +18,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         throw std::runtime_error("BuilderError: " + ex.what());
     }
 
-    // TODO: is this really necessary though...
-    // Assign nullptr to WindowUI widget pointers
+    // TODO: incomplete assignments of nullptr to WindowUI widget pointers. Assign nullptr to all WindowUI widget pointers.
     main_window = nullptr;
     settings_window = nullptr;
     method_button = nullptr;
@@ -48,6 +47,14 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
 
     builder->get_widget("method_select", method_select);
     builder->get_widget("method_button", method_button);
+    method_button->hide();
+
+    builder->get_widget("label_inputs", label_inputs);
+    builder->get_widget("label_outputs", label_outputs);
+    label_inputs->hide();
+    label_outputs->hide();
+
+    builder->get_widget("status_label", status_label);
     builder->get_widget("menu_file_quit", menu_file_quit);
     builder->get_widget("menu_edit_settings", menu_edit_settings);
     builder->get_widget("menu_about", menu_about);
@@ -173,11 +180,35 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         this->memorable.setTotalLength(this->scale_length->get_value());
         this->memorable.storeAsJSONDict();
         this->settings_window->hide();
+        this->status_label->set_text("Settings applied.");
     });
     safe_connect_signal(settings_defaults_button, settings_defaults_button->signal_clicked(), [this] {
         // TODO: default settings are not centralized, will need to refactor
         this->memorable.setToJSONDict("memorableDefaults");
         this->settings_window->hide();
+        this->status_label->set_text("Default settings reverted.");
+    });
+
+    safe_connect_signal(method_select, method_select->signal_changed(), [this] {
+        for (uint row = INPUT1; row < fieldrows; row++) {
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+            std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+        }
+        label_inputs->show();
+        label_outputs->hide();
+
+        std::vector<std::string> inputs = ActionTransform::getInputLabels(ActionTransform::ustringToAction(this->method_select->get_active_id()));
+
+        uint row = INPUT1;
+        for (std::string input : inputs) {
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(input);
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
+            std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
+            row++;
+        }
+
+        this->status_label->set_text("Method selected, displaying inputs.");
+        this->method_button->show();
     });
 
     safe_connect_signal(method_button, method_button->signal_clicked(), [this] {
@@ -187,13 +218,26 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
 
         std::vector<std::pair<std::string, std::string>> outputs = ActionTransform::transform(inputs, ActionTransform::ustringToAction(this->method_select->get_active_id()));
 
+        for (uint row = OUTPUT1; row < fieldrows; row++) {
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+            std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+        }
+
         uint row = OUTPUT1;
         for (std::pair<std::string, std::string> output : outputs) {
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(output.first);
+            std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(output.second);
+            std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
             row++;
         }
+
+        label_outputs->show();
+
+        this->status_label->set_text("Method applied, displaying outputs.");
     });
+
+
 }
 
 void

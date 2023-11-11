@@ -8,6 +8,29 @@ ActionTransform::ustringToAction(const Glib::ustring &src) {
     throw std::runtime_error("Invalid action requested for ActionTransform::ustringToAction().");
 }
 
+std::vector<std::string>
+ActionTransform::getInputLabels(const Actions action) {
+    std::vector<std::string> labels;
+
+    switch (action) {
+        case AES128:
+        case AES256:
+            labels.reserve(3);
+            labels.emplace_back("Key");
+            labels.emplace_back("IV");
+            labels.emplace_back("Plaintext");
+            break;
+        case MD5:
+            labels.reserve(1);
+            labels.emplace_back("Plaintext");
+            break;
+        default:
+            throw std::runtime_error("Invalid action requested for ActionTransform::getInputLabels().");
+    }
+
+    return labels;
+}
+
 std::vector<std::pair<std::string, std::string>>
 ActionTransform::transform(const std::vector<std::string> &input, const Actions action) {
     std::vector<std::pair<std::string, std::string>> output;

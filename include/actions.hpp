@@ -24,6 +24,7 @@ public:
 
     static Actions ustringToAction(const Glib::ustring &src);
 
+    static std::vector<std::string> getInputLabels(const Actions action);
     static std::vector<std::pair<std::string, std::string>> transform(const std::vector<std::string> &input, const Actions action);
 };
 
