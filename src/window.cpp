@@ -193,6 +193,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         for (uint row = INPUT1; row < fieldrows; row++) {
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+            std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)])->hide();
         }
         label_inputs->show();
         label_outputs->hide();
@@ -204,6 +205,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(input);
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
+            std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)])->show();
             row++;
         }
 
@@ -221,6 +223,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
         for (uint row = OUTPUT1; row < fieldrows; row++) {
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->hide();
+            std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)])->hide();
         }
 
         uint row = OUTPUT1;
@@ -229,6 +232,7 @@ WindowUI::WindowUI(const std::string &uiFile, const std::string &settingsFile, M
             std::get<LABEL>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->set_text(output.second);
             std::get<FIELD>(fields[static_cast<WindowUI::FieldRowIndex>(row)])->show();
+            std::get<BUTTON>(fields[static_cast<FieldRowIndex>(row)])->show();
             row++;
         }
 
