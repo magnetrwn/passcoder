@@ -26,6 +26,7 @@
 + OpenSSL algorithms for encryption and hashing (will add more).
 + Persistent settings, including window size and random string generator options.
 + Random string generator using STL Mersenne Twister implementation, and many different string generators.
++ 1337 settings toggle. :wink:
 
 ## Quick Start
 
@@ -70,9 +71,9 @@ In the `build` folder, simply run the application using `./passcoder` after buil
 
 The project is licensed under the BSD 3-Clause License. Feel free to contribute! I am welcome to suggestions and improvements.
 
----
-
 # Project Structure
+
+**Here is a more in-depth description of the project structure overall.**
 
 ## Random Strings
 
