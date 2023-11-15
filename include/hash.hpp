@@ -11,7 +11,7 @@
 
 class HashTools {
 public:
-    static std::string md5(const std::string &src);
+    static std::string digest(const std::string &algorithm, const std::string &src);
 };
 
 #endif

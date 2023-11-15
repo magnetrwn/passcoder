@@ -48,7 +48,7 @@ ActionTransform::transform(const std::vector<std::string> &input, const Actions 
             break;
         case MD5:
             output.reserve(1);
-            hexCiphertext = HashTools::md5(input[0]);
+            hexCiphertext = HashTools::digest("md5", input[0]);
             output.emplace_back(std::pair<std::string, std::string>("Hex Hash", hexCiphertext));
             break;
         default:
